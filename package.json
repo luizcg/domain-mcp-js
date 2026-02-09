@@ -1,0 +1,20 @@
+{
+  "name": "domain-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for domain research - WHOIS, DNS, SSL, availability checks and more",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "domain-mcp": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "node --test tests/*.test.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0"
+  },
+  "devDependencies": {},
+  "keywords": ["mcp", "domain", "whois", "dns", "ssl"],
+  "license": "MIT"
+}
