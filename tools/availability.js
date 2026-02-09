@@ -1,16 +1,32 @@
 import { dnsLookup } from './dns.js';
+import { whoisLookup } from './whois.js';
 
 export async function checkDomainAvailability(domain) {
   try {
-    const aRecords = await dnsLookup(domain, 'A');
-    if (aRecords.length && !aRecords.some((r) => String(r).includes('Error'))) {
-      return false;
-    }
+    // 1. Check DNS records (fast path)
+    const [aRecords, nsRecords] = await Promise.all([
+      dnsLookup(domain, 'A'),
+      dnsLookup(domain, 'NS'),
+    ]);
 
-    const nsRecords = await dnsLookup(domain, 'NS');
-    if (nsRecords.length && !nsRecords.some((r) => String(r).includes('Error'))) {
-      return false;
-    }
+    const hasA = aRecords.length && !aRecords.some((r) => String(r).includes('Error'));
+    const hasNS = nsRecords.length && !nsRecords.some((r) => String(r).includes('Error'));
+
+    if (hasA || hasNS) return false;
+
+    // 2. Check RDAP — catches registered domains with no DNS
+    try {
+      const whois = await whoisLookup(domain);
+      if (whois && !whois.error) {
+        const status = whois.status || [];
+        if (status.some((s) => s.includes('active') || s.includes('registered'))) {
+          return false;
+        }
+        if (whois.events?.length || whois.ldhName || whois.handle) {
+          return false;
+        }
+      }
+    } catch { /* RDAP unavailable, rely on DNS result */ }
 
     return true;
   } catch {
