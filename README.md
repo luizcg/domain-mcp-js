@@ -76,6 +76,25 @@ Add to your MCP config (`~/.cursor/mcp.json`):
 }
 ```
 
+## Example Prompts
+
+Once the MCP is configured, you can use prompts like these in Claude Code, Claude Desktop, or any MCP-compatible client:
+
+**Naming a new product:**
+> I'm building a task management app for freelancers. Suggest 10 creative product names and check which .com domains are available.
+
+**Deep dive on a specific name:**
+> I like the name "taskflow". Check domain availability for taskflow.com, taskflow.io, taskflow.app, and taskflow.dev. Also check who owns the ones that are taken and when they expire.
+
+**Expired domain hunting:**
+> Search for expired domains related to "finance". Show me the best options and check their history.
+
+**Competitive research:**
+> Look up the WHOIS info, DNS setup, and SSL certificate for linear.app. I want to understand their infrastructure.
+
+**Bulk availability check:**
+> Check if these domains are available: acmehq.com, acmehq.io, acmeapp.com, getacme.com, useacme.com, tryacme.dev
+
 ## Running Tests
 
 ```bash
